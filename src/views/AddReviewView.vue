@@ -29,44 +29,71 @@
               <span class="carousel-dot mx-1"></span>
               <span class="carousel-dot mx-1"></span>
             </div>
-            <div class="row mt-4">
-                <div class="col-md-12 offset-3">
-                <button class="btn btn-primary mt-3" @click="writeReview">Write a review</button>
-                </div>
-            </div>
           </div>
         </div>
       </div>
   
       <!-- Review Input and Rating Section -->
+      <div class="row mt-4">
+        <div class="col-md-12">
+          <textarea
+            class="form-control"
+            rows="3"
+            placeholder="Write your review..."
+            v-model="reviewText"
+          ></textarea>
+          <div class="rating-section mt-3 d-flex align-items-center justify-content-center">
+            <span class="me-2">Rate the event</span>
+            <span v-for="star in 5" :key="star" class="star" @click="selectRating(star)">
+              {{ star <= selectedRating ? '★' : '☆' }}
+            </span>
+          </div>
+          <button class="btn btn-primary mt-3" @click="submitRating">Submit Rating</button>
+        </div>
+      </div>
     </div>
   </template>
   
   <script setup>
-import { ref, computed } from 'vue';
-import { useRouter } from 'vue-router';
-import { reviews,isReviewed } from '@/composables/review';
-
+  import { ref, computed } from 'vue';
+  import { reviews, isReviewed} from '@/composables/review';
+import router from '@/router';
+  
+  // Reactive variables for review text, selected rating, and final rating
+  const reviewText = ref('');
+  const selectedRating = ref(0); // Temporary rating before submission
+  
   // Computed property to calculate average rating
   const averageRating = computed(() => {
     if (reviews.value.length === 0) return 0;
     const total = reviews.value.reduce((sum, rating) => sum + rating, 0);
     return total / reviews.value.length;
   });
-const router = useRouter();
-
-  const writeReview = () =>{
-    if (isReviewed.value === true)
+  
+  // Function to select the rating (before submitting)
+  const selectRating = (star) => {
+    selectedRating.value = star;
+  };
+  
+  // Function to submit the rating
+  const submitRating = () => {
+    if (selectedRating.value > 0) {
+      reviews.value.push(selectedRating.value); // Add the selected rating to the ratings array
+      isReviewed.value = true;
+      selectedRating.value = 0; // Reset the selected rating
+      reviewText.value = ''; // Clear the review text
+      alert('Rating submitted!'); // Confirmation message
+      router.push('/Review')
+    } else if (!isReviewed.value === true)
     {
         alert('You have already reviewed');
         router.push('/Review');
-    } 
-    else
+    }  
+    else  
     {
-        router.push('/AddReview');
+      alert('Please select a rating before submitting.');
     }
-  }
-
+  };
 
   </script>
   

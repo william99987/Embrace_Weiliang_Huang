@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router';
-import { isAuthenticated, users } from '@/composables/useAuth';
+import { admins, isAuthenticated, isAuthenticatedUser, users } from '@/composables/useAuth';
 
 const router = useRouter();
 
@@ -27,14 +27,21 @@ const errors = ref({
 const login = () =>
 {
     const user = users.value.some(user => user.username === formData.value.username && user.password === formData.value.password)
+    const admin = admins.value.some(admin => admin.username === formData.value.username && admin.password === formData.value.password)
     if (user) {
-        isAuthenticated.value = true;
+        isAuthenticatedUser.value = true;
         errors.value.login = null;
-        localStorage.setItem('isAuthenticated', 'true')
+        localStorage.setItem('isAuthenticatedUser', 'true')
         router.push('/');
     }
+    else if (admin){
+      isAuthenticatedAdmin.value = true;
+      errors.value.login = null;
+      localStorage.setItem('isAuthenticatedAdmin', 'true')
+      router.push('/')
+    }
     else{
-        errors.value.login = "Your password or username is incorrect"
+      errors.value.login = "Your password or username is incorrect"
     }
 }
 

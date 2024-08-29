@@ -1,15 +1,11 @@
 <script setup>
-import EHeader from './components/EHeader.vue';
+import WholeWeb from './whole_web/WholeWeb.vue';
 </script>
 
 <template>
-  <header>
-    <EHeader />
-  </header>
-  
-  <main>
-    <router-view></router-view>
-  </main>
+  <div class="container">
+    <WholeWeb />
+  </div>
 </template>
 
 <style scoped>

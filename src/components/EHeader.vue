@@ -1,69 +1,164 @@
 <template>
-    <!-- Using Bootstrap's Header template (starter code) -->
-    <!-- https://getbootstrap.com/docs/5.0/examples/headers/ -->
-    <div class="container">
-      <header class="d-sm-flex justify-content-center py-3">
-        <ul class="nav nav-pills">
-          <li class="nav-item">
-            <router-link to="/" class="nav-link" active-class="active" aria-current="page"
-              >Home</router-link
-            >
+  <div class="container-fluid">
+    <header class="d-flex justify-content-center py-3">
+      <!-- Logo -->
+      <a href="/" class="d-flex align-items-center text-dark text-decoration-none mb-2 mb-lg-0">
+        <img src="../icons/logo.png" alt="Charity Logo" width="40" height="40" class="me-2" />
+        <span class="fs-4">Embrace</span>
+      </a>
+      <!-- Navigation Links -->
+      <!-- Simplified Dropdown -->
+      <div class="dropdown">
+        <button class="btn btn-link dropdown-toggle text-dark fw-normal" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Events
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+            <router-link to="/Review" class="dropdown-item">Event reviews</router-link>
           </li>
-          <li class="nav-item" v-if="!isAuthenticated">
-            <router-link to="/Login" class="nav-link" active-class="active">Login</router-link>
+          <li>
+            <router-link to="/Signup" class="dropdown-item">Fundraise</router-link>
           </li>
-
-          <li class="nav-item" v-if="!isAuthenticated">
-            <router-link to="/Signup" class="nav-link" active-class="active">Sign up</router-link>
+          <li>
+            <router-link to="/aboutUs" class="dropdown-item">Events</router-link>
           </li>
-
-          <li class="nav-item" v-else>
-          <a href="#" class="nav-link" @click="logout">Sign Out</a>
-          </li>
-
         </ul>
-      </header>
-    </div>
-  </template>
+      </div>
+
+      <!-- Authentication Buttons -->
+      <div class="d-flex">
+        <!-- Login Button -->
+        <router-link
+          to="/Login"
+          v-if="!isAuthenticated"
+          class="button-outline-primary nav-link me-2"
+          active-class="active"
+        >
+          Log in
+        </router-link>
+
+        <!-- Sign Up Button -->
+        <router-link
+          to="/Signup"
+          v-if="!isAuthenticated"
+          class="button-primary nav-link"
+          active-class="active"
+        >
+          Sign up
+        </router-link>
+
+        <!-- Sign Out Button -->
+        <router-link v-else class="button-primary nav-link" @click="logout"> Sign out </router-link>
+      </div>
+    </header>
+  </div>
+</template>
 
 <script setup>
-import { isAuthenticated, logout } from '@/composables/useAuth';
+import { ref } from 'vue'
+import { isAuthenticated, logout } from '@/composables/useAuth'
 </script>
-  
-  <style scoped>
-  .b-example-divider {
-    height: 3rem;
-    background-color: rgba(0, 0, 0, 0.1);
-    border: solid rgba(0, 0, 0, 0.15);
-    border-width: 1px 0;
-    box-shadow:
-      inset 0 0.5em 1.5em rgba(0, 0, 0, 0.1),
-      inset 0 0.125em 0.5em rgba(0, 0, 0, 0.15);
+
+<style scoped>
+.container-fluid {
+  max-width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+header {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.nav-link {
+  color: #000;
+}
+
+.nav-link.active {
+  color: #007bff;
+}
+
+.button-primary {
+  color: #fff;
+  background-color: #2d00f7;
+  border: 2px solid #2d00f7;
+  border-radius: 15px;
+  padding: 8px 20px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  text-align: center;
+  display: inline-block;
+}
+
+.button-outline-primary {
+  color: #2d00f7;
+  border: 2px solid #2d00f7;
+  background-color: transparent;
+  border-radius: 15px;
+  padding: 8px 20px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  text-align: center;
+  display: inline-block;
+}
+
+.button-primary:hover {
+  background-color: #1f00b7;
+  border-color: #1f00b7;
+}
+
+.button-outline-primary:hover {
+  background-color: #2d00f7;
+  color: #fff;
+}
+/* Dropdown button styling */
+.btn-secondary.dropdown-toggle {
+  background-color: #2d00f7; /* Custom background color */
+  border-color: #2d00f7;     /* Custom border color */
+  color: #fff;               /* Custom text color */
+  border-radius: 5px;        /* Rounded corners */
+  padding: 8px 16px;         /* Padding for a comfortable clickable area */
+  font-weight: 500;          /* Bold text */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth hover transition */
+}
+
+.btn-secondary.dropdown-toggle:hover {
+  background-color: #1f00b7; /* Hover background color */
+  border-color: #1f00b7;     /* Hover border color */
+}
+
+/* Dropdown button styling */
+.btn-link.dropdown-toggle {
+  color: #333;
+  text-decoration: none;
+  padding: 8px 15px;
+  font-weight: 400;
+}
+
+.btn-link.dropdown-toggle::after {
+  margin-left: 0.25em;
+  vertical-align: 0.1em;
+}
+
+.dropdown-menu {
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+  color: #333;
+  padding: 10px 20px;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #f1f1f1;
+}
+
+@media (max-width: 991.98px) {
+  .nav {
+    flex-direction: column;
+    align-items: center;
   }
-  
-  .form-control-dark {
-    color: #fff;
-    background-color: var(--bs-dark);
-    border-color: var(--bs-gray);
-  }
-  .form-control-dark:focus {
-    color: #fff;
-    background-color: var(--bs-dark);
-    border-color: #fff;
-    box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
-  }
-  
-  .bi {
-    vertical-align: -0.125em;
-    fill: currentColor;
-  }
-  
-  .text-small {
-    font-size: 85%;
-  }
-  
-  .dropdown-toggle {
-    outline: 0;
-  }
-  </style>
-  
+}
+</style>

@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router';
-import { users } from '@/composables/useAuth';
+import { users, admins } from '@/composables/useAuth';
 const router = useRouter();
 
 const Signup = () => {
