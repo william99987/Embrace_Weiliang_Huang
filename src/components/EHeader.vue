@@ -1,11 +1,11 @@
 <template>
-  <div class="container-fluid">
+  <div class="container">
     <header class="d-flex justify-content-center py-3">
       <!-- Logo -->
-      <a href="/" class="d-flex align-items-center text-dark text-decoration-none mb-2 mb-lg-0">
+      <router-link to="/" class="d-flex align-items-center text-dark text-decoration-none mb-2 mb-lg-0">
         <img src="../icons/logo.png" alt="Charity Logo" width="40" height="40" class="me-2" />
         <span class="fs-4">Embrace</span>
-      </a>
+      </router-link>
       <!-- Navigation Links -->
       <!-- Simplified Dropdown -->
       <div class="dropdown">
@@ -14,7 +14,7 @@
         </button>
         <ul class="dropdown-menu">
           <li>
-            <router-link to="/Review" class="dropdown-item">Event reviews</router-link>
+            <router-link to="/Review" class="dropdown-item" >Event reviews</router-link>
           </li>
           <li>
             <router-link to="/Signup" class="dropdown-item">Fundraise</router-link>
@@ -30,7 +30,7 @@
         <!-- Login Button -->
         <router-link
           to="/Login"
-          v-if="!isAuthenticated"
+          v-if="!isAuthenticatedUser && !isAuthenticatedAdmin"
           class="button-outline-primary nav-link me-2"
           active-class="active"
         >
@@ -40,7 +40,7 @@
         <!-- Sign Up Button -->
         <router-link
           to="/Signup"
-          v-if="!isAuthenticated"
+          v-if="!isAuthenticatedUser && !isAuthenticatedAdmin"
           class="button-primary nav-link"
           active-class="active"
         >
@@ -48,7 +48,7 @@
         </router-link>
 
         <!-- Sign Out Button -->
-        <router-link v-else class="button-primary nav-link" @click="logout"> Sign out </router-link>
+        <button v-else class="button-primary" @click="logout">Sign out</button>
       </div>
     </header>
   </div>
@@ -56,7 +56,15 @@
 
 <script setup>
 import { ref } from 'vue'
-import { isAuthenticated, logout } from '@/composables/useAuth'
+import { isAuthenticatedUser, isAuthenticatedAdmin} from '@/composables/useAuth'
+import { useRouter } from 'vue-router';
+const router = useRouter();
+
+const logout = () => {
+  isAuthenticatedUser.value = false;
+  isAuthenticatedAdmin.value = false;
+  router.push('/'); // Redirect to home or any other route after logout
+};
 </script>
 
 <style scoped>
@@ -153,12 +161,5 @@ header {
 
 .dropdown-item:hover {
   background-color: #f1f1f1;
-}
-
-@media (max-width: 991.98px) {
-  .nav {
-    flex-direction: column;
-    align-items: center;
-  }
 }
 </style>

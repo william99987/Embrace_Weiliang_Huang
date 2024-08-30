@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router';
-import { users, admins } from '@/composables/useAuth';
+import { users } from '@/composables/useAuth';
 const router = useRouter();
 
 const Signup = () => {
@@ -153,14 +153,14 @@ const validateConfirmPassword = (blur) => {
 </template>
 
 <style scoped>
-.container {
+/* .container {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   max-width: 80vw;
   margin: 0 auto;
   padding: 20px;
   /* background-color: #e0bfbf; */
-  border-radius: 10px;
-}
+  /* border-radius: 10px;
+} */
 
 /* Class selectors */
 .form {

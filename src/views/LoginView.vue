@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router';
-import { admins, isAuthenticated, isAuthenticatedUser, users } from '@/composables/useAuth';
+import { admins, isAuthenticatedAdmin, isAuthenticatedUser, users } from '@/composables/useAuth';
 
 const router = useRouter();
 
@@ -45,6 +45,12 @@ const login = () =>
     }
 }
 
+const submitForm = (event) => {
+  event.preventDefault(); // Prevent default form submission behavior
+  login(); // Perform login
+  clearForm(); // Clear form fields
+};
+
 </script>
 
 <template>
@@ -82,9 +88,8 @@ const login = () =>
             </div>
           </div>
           <div class="text-center">
-            <button type="submit" class="btn btn-primary me-2" @click="login(); clearForm()">Login</button>
+            <button type="submit" class="btn btn-primary me-2">Login</button>
             <div v-if="errors.login" class="text-danger">{{ errors.login }}</div>
-            <!-- <button type="button" class="btn btn-secondary" @click="clearForm">Clear</button> -->
           </div>
         </form>
       </div>
@@ -93,14 +98,14 @@ const login = () =>
 </template>
 
 <style scoped>
-.container {
+/* .container {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   max-width: 80vw;
   margin: 0 auto;
   padding: 20px;
   /* background-color: #e0bfbf; */
-  border-radius: 10px;
-}
+  /* border-radius: 10px;
+} */ 
 
 /* Class selectors */
 .form {

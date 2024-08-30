@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid py-4">
+    <div class="container py-4">
       <div class="row">
         <!-- Event Details Section -->
         <div class="col-md-6">
@@ -84,10 +84,6 @@ import router from '@/router';
       reviewText.value = ''; // Clear the review text
       alert('Rating submitted!'); // Confirmation message
       router.push('/Review')
-    } else if (!isReviewed.value === true)
-    {
-        alert('You have already reviewed');
-        router.push('/Review');
     }  
     else  
     {
@@ -98,10 +94,7 @@ import router from '@/router';
   </script>
   
   <style scoped>
-  .container-fluid {
-    max-width: 1200px;
-  }
-  
+
   /* Event details styling */
   .event-details {
     border: 1px solid #ddd;

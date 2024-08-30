@@ -71,9 +71,9 @@ const router = useRouter();
   </script>
   
   <style scoped>
-  .container-fluid {
+  /* .container-fluid {
     max-width: 1200px;
-  }
+  } */
   
   /* Event details styling */
   .event-details {

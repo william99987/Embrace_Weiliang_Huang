@@ -1,8 +1,4 @@
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-
-// Router instance must be used within a function or setup
-const router = useRouter();
 
 const users = ref(JSON.parse(localStorage.getItem('users')) || []);
 
@@ -24,11 +20,6 @@ const admins = ref([
 // Reactive state for authentication
 const isAuthenticatedUser = ref(false);
 const isAuthenticatedAdmin = ref(false);
-// Function to log out the user
-const logout = () => {
-  isAuthenticatedUser.value = false; // Update state to unauthenticated
-  router.push('/'); // Redirect to home or any other route after logout
-};
 
 // Export the state and function so they can be used in other components
-export { isAuthenticatedUser, isAuthenticatedAdmin,users, admins, logout };
+export { isAuthenticatedUser, isAuthenticatedAdmin,users, admins};
