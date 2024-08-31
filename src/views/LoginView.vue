@@ -64,7 +64,7 @@ const submitForm = (event) => {
         </p>
         <form @submit.prevent="submitForm">
           <div class="row mb-3 justify-content-center">
-            <div class="col-md-8 col-sm-8">
+            <div class="col-md-8">
               <label for="username" class="form-label">Username</label>
               <input
                 type="text"
@@ -76,7 +76,7 @@ const submitForm = (event) => {
             </div>
           </div>
           <div class="row mb-3 justify-content-center">
-            <div class="col-md-8 col-sm-8">
+            <div class="col-md-8">
               <label for="password" class="form-label">Password</label>
               <input
                 type="password"

@@ -8,7 +8,7 @@
       </router-link>
       <!-- Navigation Links -->
       <!-- Simplified Dropdown -->
-      <div class="dropdown">
+      <div v-if="!isAuthenticatedAdmin" class="dropdown">
         <button class="btn btn-link dropdown-toggle text-dark fw-normal" type="button" data-bs-toggle="dropdown" aria-expanded="false">
           Events
         </button>

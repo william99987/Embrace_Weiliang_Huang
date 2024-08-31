@@ -10,12 +10,12 @@ import EHeader from './components/EHeader.vue';
   </header>
 </div>
 
-<div class="row">
+<!-- <div class="row"> -->
   <div class="justify-content-center">
   <main>
     <router-view></router-view>
   </main>
-</div>
+<!-- </div> -->
 </div>
 </div>
 </template>

@@ -6,11 +6,16 @@ const router = useRouter();
 
 const Signup = () => {
   const userExists = users.value.some(user => user.username === formData.value.username);
+  validateName(true);
+  validatePassword(true);
+  validateConfirmPassword(true);
   if (userExists) {
     errors.value.signupUsername = 'Username already exists';
     return;
   }
-  const newUser = {
+  else if(!errors.value.username && !errors.value.password && !errors.value.confirmPassword)
+  {
+    const newUser = {
     username: formData.value.username,
     password: formData.value.password
   };
@@ -19,6 +24,11 @@ const Signup = () => {
   clearForm();
   router.push('/');
   alert('User registered successfully! Please log in.');
+  }
+  else
+  {
+    return;
+}
 };
 
 const formData = ref({
@@ -94,9 +104,9 @@ const validateConfirmPassword = (blur) => {
   <div class="container mt-5">
     <div class="row">
       <div class="col-md-8 offset-md-2">
-        <h1 class="text-center">Signu pu to enbrace</h1>
+        <h1 class="text-center">Sign up to embrace</h1>
         <p class="text-center">
-          Let's build some more advanced fxeature into our form.
+          Let's embrace each other.
         </p>
         <form @submit.prevent="submitForm">
           <div class="row mb-3">
