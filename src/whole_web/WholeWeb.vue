@@ -5,12 +5,12 @@ import EHeader from '../components/EHeader.vue';
 <template>
     <div class="container">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-sm-12">
                 <EHeader />
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-sm-12">
             <router-view></router-view>
             </div>
         </div>

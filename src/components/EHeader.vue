@@ -7,7 +7,6 @@
         <span class="fs-4">Embrace</span>
       </router-link>
       <!-- Navigation Links -->
-      <!-- Simplified Dropdown -->
       <div v-if="!isAuthenticatedAdmin" class="dropdown">
         <button class="btn btn-link dropdown-toggle text-dark fw-normal" type="button" data-bs-toggle="dropdown" aria-expanded="false">
           Events
@@ -58,11 +57,13 @@
 import { ref } from 'vue'
 import { isAuthenticatedUser, isAuthenticatedAdmin} from '@/composables/useAuth'
 import { useRouter } from 'vue-router';
+import { isReviewed } from '@/composables/review';
 const router = useRouter();
 
 const logout = () => {
   isAuthenticatedUser.value = false;
   isAuthenticatedAdmin.value = false;
+  isReviewed.value = false;
   router.push('/'); // Redirect to home or any other route after logout
 };
 </script>
