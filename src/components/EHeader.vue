@@ -1,71 +1,112 @@
 <template>
-  <div class="container">
-    <header class="d-flex justify-content-center py-3">
-      <!-- Logo -->
-      <router-link to="/" class="d-flex align-items-center text-dark text-decoration-none mb-2 mb-lg-0">
-        <img src="../icons/logo.png" alt="Charity Logo" width="40" height="40" class="me-2" />
-        <span class="fs-4">Embrace</span>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <!-- Logo and Brand Name -->
+      <router-link to="/" class="navbar-brand">
+        <img src="../logo.png" alt="Charity Logo" width="40" height="40" class="me-2" />
+        Embrace
       </router-link>
-      <!-- Navigation Links -->
-      <div v-if="!isAuthenticatedAdmin" class="dropdown">
-        <button class="btn btn-link dropdown-toggle text-dark fw-normal" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Events
-        </button>
-        <ul class="dropdown-menu">
-          <li>
-            <router-link to="/Review" class="dropdown-item" >Event reviews</router-link>
+
+      <!-- Toggler for Small Screens -->
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Navbar Content: Links, Dropdowns, Authentication Buttons -->
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- Left side (Navigation Links) -->
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <!-- Conditional Dropdown based on Authentication -->
+          <li v-if="!isAuthenticatedAdmin" class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Events
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <router-link to="/Review" class="dropdown-item">Event reviews</router-link>
+              </li>
+              <li>
+                <router-link to="/Signup" class="dropdown-item">Fundraise</router-link>
+              </li>
+              <li>
+                <router-link to="/aboutUs" class="dropdown-item">Events</router-link>
+              </li>
+            </ul>
           </li>
-          <li>
-            <router-link to="/Signup" class="dropdown-item">Fundraise</router-link>
+
+          <!-- Additional Static Navigation Links (optional) -->
+          <li class="nav-item">
+            <router-link to="/aboutUs" class="nav-link">About Us</router-link>
           </li>
-          <li>
-            <router-link to="/aboutUs" class="dropdown-item">Events</router-link>
+          <li class="nav-item">
+            <router-link to="/contact" class="nav-link">Contact</router-link>
           </li>
         </ul>
+
+        <!-- Right side (Search and Authentication Buttons) -->
+        <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+
+        <!-- Authentication Buttons (Login, Sign Up, or Sign Out) -->
+        <div class="d-flex ms-2">
+          <!-- Log in -->
+          <router-link
+            to="/Login"
+            v-if="!isAuthenticatedUser && !isAuthenticatedAdmin"
+            class="btn btn-outline-primary me-2"
+            active-class="active"
+          >
+            Log in
+          </router-link>
+
+          <!-- Sign Up -->
+          <router-link
+            to="/Signup"
+            v-if="!isAuthenticatedUser && !isAuthenticatedAdmin"
+            class="btn btn-primary"
+            active-class="active"
+          >
+            Sign up
+          </router-link>
+
+          <!-- Sign Out -->
+          <button v-else class="btn btn-primary" @click="logout">Sign out</button>
+        </div>
       </div>
-
-      <!-- Authentication Buttons -->
-      <div class="d-flex">
-        <!-- Login Button -->
-        <router-link
-          to="/Login"
-          v-if="!isAuthenticatedUser && !isAuthenticatedAdmin"
-          class="button-outline-primary nav-link me-2"
-          active-class="active"
-        >
-          Log in
-        </router-link>
-
-        <!-- Sign Up Button -->
-        <router-link
-          to="/Signup"
-          v-if="!isAuthenticatedUser && !isAuthenticatedAdmin"
-          class="button-primary nav-link"
-          active-class="active"
-        >
-          Sign up
-        </router-link>
-
-        <!-- Sign Out Button -->
-        <button v-else class="button-primary" @click="logout">Sign out</button>
-      </div>
-    </header>
-  </div>
+    </div>
+  </nav>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import { isAuthenticatedUser, isAuthenticatedAdmin} from '@/composables/useAuth'
-import { useRouter } from 'vue-router';
-import { isReviewed } from '@/composables/review';
-const router = useRouter();
+import { isAuthenticatedUser, isAuthenticatedAdmin } from '@/composables/useAuth'
+import { useRouter } from 'vue-router'
+import { isReviewed } from '@/composables/review'
+import Button from 'primevue/button'
+const router = useRouter()
 
 const logout = () => {
-  isAuthenticatedUser.value = false;
-  isAuthenticatedAdmin.value = false;
-  isReviewed.value = false;
-  router.push('/'); // Redirect to home or any other route after logout
-};
+  isAuthenticatedUser.value = false
+  isAuthenticatedAdmin.value = false
+  isReviewed.value = false
+  router.push('/') // Redirect to home or any other route after logout
+}
 </script>
 
 <style scoped>
@@ -123,17 +164,19 @@ header {
 /* Dropdown button styling */
 .btn-secondary.dropdown-toggle {
   background-color: #2d00f7; /* Custom background color */
-  border-color: #2d00f7;     /* Custom border color */
-  color: #fff;               /* Custom text color */
-  border-radius: 5px;        /* Rounded corners */
-  padding: 8px 16px;         /* Padding for a comfortable clickable area */
-  font-weight: 500;          /* Bold text */
-  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth hover transition */
+  border-color: #2d00f7; /* Custom border color */
+  color: #fff; /* Custom text color */
+  border-radius: 5px; /* Rounded corners */
+  padding: 8px 16px; /* Padding for a comfortable clickable area */
+  font-weight: 500; /* Bold text */
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease; /* Smooth hover transition */
 }
 
 .btn-secondary.dropdown-toggle:hover {
   background-color: #1f00b7; /* Hover background color */
-  border-color: #1f00b7;     /* Hover border color */
+  border-color: #1f00b7; /* Hover border color */
 }
 
 /* Dropdown button styling */
