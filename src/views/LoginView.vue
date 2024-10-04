@@ -1,138 +1,123 @@
 <script setup>
 import { ref } from 'vue'
-import { useRouter } from 'vue-router';
-import { admins, isAuthenticatedAdmin, isAuthenticatedUser, users } from '@/composables/useAuth';
+import { useRouter } from 'vue-router'
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import { doc, getDoc } from 'firebase/firestore'
+import store from '@/store/store'
+import db from '@/firebase/init'
 
-const router = useRouter();
+const router = useRouter()
+const auth = getAuth()
 
 const formData = ref({
-  username: '',
+  email: '',
   password: ''
 })
 
 const clearForm = () => {
   formData.value = {
-    username: '',
+    email: '',
     password: ''
   }
 }
 
 const errors = ref({
-  username: null,
+  email: null,
   password: null,
   login: null
 })
 
-
-const login = () =>
-{
-    const user = users.value.some(user => user.username === formData.value.username && user.password === formData.value.password)
-    const admin = admins.value.some(admin => admin.username === formData.value.username && admin.password === formData.value.password)
-    if (user) {
-        isAuthenticatedUser.value = true;
-        errors.value.login = null;
-        localStorage.setItem('isAuthenticatedUser', 'true')
-        router.push('/');
-    }
-    else if (admin){
-      isAuthenticatedAdmin.value = true;
-      errors.value.login = null;
-      localStorage.setItem('isAuthenticatedAdmin', 'true')
+const login = () => {
+  signInWithEmailAndPassword(auth, formData.value.email, formData.value.password)
+    .then((data) => {
+      const user = auth.currentUser
+      if (user) {
+        const userDocRef = doc(db, 'users', user.uid)
+        getDoc(userDocRef).then((userDoc) => {
+          const userData = userDoc.data()
+          console.log('Firebase Sign-In Successful!')
+          if (userData.role === 'admin') {
+            console.log('User is an admin')
+          } else if (userData.role === 'user') {
+            console.log('User is a regular user')
+          }
+        })
+      }
+      store.commit('setAuthentication', true)
       router.push('/')
-    }
-    else{
-      errors.value.login = "Your password or username is incorrect"
-    }
+      console.log(auth.currentUser) // To check the current user signed in
+    })
+    .catch((error) => {
+      console.log(error.code)
+    })
 }
 
 const submitForm = (event) => {
-  event.preventDefault(); // Prevent default form submission behavior
-  login(); // Perform login
-  clearForm(); // Clear form fields
-};
-
+  event.preventDefault() // Prevent default form submission behavior
+  login() // Perform login
+  clearForm() // Clear form fields
+}
 </script>
 
 <template>
-  <!-- 🗄️ W3. Library Registration Form -->
-  <div class="container mt-5">
-    <div class="row">
-      <div class="col-md-8 offset-md-2">
-        <h1 class="text-center">Log in to Embrace</h1>
-        <p class="text-center">
-          Let's build some more advanced feature into our form.
-        </p>
-        <form @submit.prevent="submitForm">
-          <div class="row mb-3 justify-content-center">
-            <div class="col-md-8">
-              <label for="username" class="form-label">Username</label>
-              <input
-                type="text"
-                class="form-control"
-                id="username"
-                v-model="formData.username"
-              />
-              <div v-if="errors.username" class="text-danger">{{ errors.username }}</div>
-            </div>
-          </div>
-          <div class="row mb-3 justify-content-center">
-            <div class="col-md-8">
-              <label for="password" class="form-label">Password</label>
-              <input
-                type="password"
-                class="form-control"
-                id="password"
-                v-model="formData.password"
-              />
-              <div v-if="errors.password" class="text-danger">{{ errors.password }}</div>
-            </div>
-          </div>
-          <div class="text-center">
-            <button type="submit" class="btn btn-primary me-2">Login</button>
-            <div v-if="errors.login" class="text-danger">{{ errors.login }}</div>
-          </div>
-        </form>
+  <div class="d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card p-4 shadow" style="max-width: 400px; width: 100%">
+      <!-- Title -->
+      <h1 class="text-center">Welcome to Embrace</h1>
+      <p class="text-center">Contact management designed for teams and individuals</p>
+
+      <!-- Google login button -->
+      <div class="text-center mb-3">
+        <button class="btn btn-light w-100 border">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png"
+            alt="Google"
+            style="width: 20px; height: 20px; margin-right: 8px"
+          />
+          Continue with Google
+        </button>
       </div>
+
+      <!-- Horizontal divider -->
+      <hr />
+
+      <!-- Username input -->
+      <form @submit.prevent="submitForm">
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input
+            type="text"
+            class="form-control"
+            id="username"
+            v-model="formData.email"
+            placeholder="Type your email"
+          />
+          <div v-if="errors.username" class="text-danger mt-2">{{ errors.username }}</div>
+        </div>
+
+        <!-- Password input -->
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            v-model="formData.password"
+            placeholder="Type your password"
+          />
+          <div v-if="errors.password" class="text-danger mt-2">{{ errors.password }}</div>
+        </div>
+
+        <!-- Continue with email button -->
+        <div class="text-center">
+          <button type="submit" class="btn btn-dark w-100">Continue with email</button>
+        </div>
+
+        <!-- Login error message -->
+        <div v-if="errors.login" class="text-danger text-center mt-3">{{ errors.login }}</div>
+      </form>
     </div>
   </div>
 </template>
 
-<style scoped>
-/* .container {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  max-width: 80vw;
-  margin: 0 auto;
-  padding: 20px;
-  /* background-color: #e0bfbf; */
-  /* border-radius: 10px;
-} */ 
-
-/* Class selectors */
-.form {
-  text-align: center;
-  margin-top: 50px;
-}
-
-/* ID selectors */
-#username:focus,
-#password:focus,
-#isAustralian:focus,
-.card {
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-.card-header {
-  background-color: #275fda;
-  color: white;
-  padding: 10px;
-  border-radius: 10px 10px 0 0;
-}
-.list-group-item {
-  padding: 10px;
-}
-
-.success-message {
-  color: green;
-}
-</style>
+<style scoped></style>

@@ -1,68 +1,72 @@
 <script setup>
 import { ref } from 'vue'
-import { useRouter } from 'vue-router';
-import { users } from '@/composables/useAuth';
-const router = useRouter();
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
+import { useRouter } from 'vue-router'
+import { getFirestore, doc, setDoc } from 'firebase/firestore'
 
-const Signup = () => {
-  const userExists = users.value.some(user => user.username === formData.value.username);
-  validateName(true);
-  validatePassword(true);
-  validateConfirmPassword(true);
-  if (userExists) {
-    errors.value.signupUsername = 'Username already exists';
-    return;
+const db = getFirestore()
+const router = useRouter()
+const auth = getAuth()
+
+const signup = async () => {
+  try {
+    // Create user with email and password
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      formData.value.email,
+      formData.value.password
+    )
+    const user = userCredential.user
+
+    console.log('Firebase Register successful!')
+
+    await setDoc(doc(db, 'users', user.uid), {
+      email: user.email,
+      role: 'user' // Assign a default role to new users
+    })
+
+    router.push('/')
+  } catch (error) {
+    console.log(error.code)
   }
-  else if(!errors.value.username && !errors.value.password && !errors.value.confirmPassword)
-  {
-    const newUser = {
-    username: formData.value.username,
-    password: formData.value.password
-  };
-  users.value.push(newUser);
-  localStorage.setItem('users', JSON.stringify(users.value)); // Persist data
-  clearForm();
-  router.push('/');
-  alert('User registered successfully! Please log in.');
-  }
-  else
-  {
-    return;
 }
-};
 
 const formData = ref({
-  username: '',
+  email: '',
   password: '',
-  confirmPassword: '',
+  confirmPassword: ''
 })
 
 const clearForm = () => {
   formData.value = {
-    username: '',
+    email: '',
     password: '',
-    confirmPassword: '',
+    confirmPassword: ''
   }
 }
 
 const errors = ref({
-  username: null,
+  email: null,
   password: null,
   confirmPassword: null,
   signupUsername: null
 })
 
 const successMessages = ref({
-  username: null,
+  email: null,
   password: null,
-  confirmPassword: null,
+  confirmPassword: null
 })
 
-const validateName = (blur) => {
-  if (formData.value.username.length < 3) {
-    if (blur) errors.value.username = 'Name must be at least 3 characters'
+const validateEmail = (blur) => {
+  const email = formData.value.email
+
+  const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/
+
+  if (!emailPattern.test(email)) {
+    if (blur) errors.value.email = 'Please enter a valid email address'
   } else {
-    errors.value.username = null
+    errors.value.email = null
   }
 }
 
@@ -96,108 +100,77 @@ const validateConfirmPassword = (blur) => {
     errors.value.confirmPassword = null
   }
 }
-
 </script>
 
 <template>
-  <!-- 🗄️ W3. Library Registration Form -->
-  <div class="container mt-5">
-    <div class="row">
-      <div class="col-md-8 offset-md-2">
-        <h1 class="text-center">Sign up to embrace</h1>
-        <p class="text-center">
-          Let's embrace each other.
-        </p>
-        <form @submit.prevent="submitForm">
-          <div class="row mb-3">
-            <div class="justify-content-center">
-              <label for="username" class="form-label">Username</label>
-              <input
-                type="text"
-                class="form-control"
-                id="username"
-                @blur="() => validateName(true)"
-                @input="() => validateName(false)"
-                v-model="formData.username"
-              />
-              <div v-if="errors.username" class="text-danger">{{ errors.username }}</div>
-            </div>
+  <div class="d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card p-4 shadow" style="max-width: 400px; width: 100%">
+      <!-- Title -->
+      <h1 class="text-center">Sign up to Embrace</h1>
+      <p class="text-center">Let's embrace each other.</p>
 
+      <!-- Signup form -->
+      <form @submit.prevent="Signup">
+        <!-- Username input -->
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input
+            type="text"
+            class="form-control"
+            id="email"
+            v-model="formData.email"
+            @blur="() => validateEmail(true)"
+            @input="() => validateEmail(false)"
+            placeholder="Type in your emaill"
+          />
+          <div v-if="errors.email" class="text-danger mt-2">{{ errors.email }}</div>
+        </div>
+
+        <!-- Password input -->
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            v-model="formData.password"
+            @blur="() => validatePassword(true)"
+            @input="() => validatePassword(false)"
+            placeholder="Create a password"
+          />
+          <div v-if="errors.password" class="text-danger mt-2">{{ errors.password }}</div>
+        </div>
+
+        <!-- Confirm Password input -->
+        <div class="mb-3">
+          <label for="confirmPassword" class="form-label">Confirm password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="confirmPassword"
+            v-model="formData.confirmPassword"
+            @blur="() => validateConfirmPassword(true)"
+            @input="() => validateConfirmPassword(false)"
+            placeholder="Confirm your password"
+          />
+          <div v-if="errors.confirmPassword" class="text-danger mt-2">
+            {{ errors.confirmPassword }}
           </div>
-          <div class="row mb-3">
-            <div class="justify-content-center">
-              <label for="password" class="form-label">Password</label>
-              <input
-                type="password"
-                class="form-control"
-                id="password"
-                @blur="() => validatePassword(true)"
-                @input="() => validatePassword(false)"
-                v-model="formData.password"
-              />
-              <div v-if="errors.password" class="text-danger">{{ errors.password }}</div>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <div class="justify-content-center">
-              <label for="condirmPassword" class="form-label">Comfirm password</label>
-              <input
-                type="password"
-                class="form-control"
-                id="confirmPassword"
-                @blur="() => validateConfirmPassword(true)"
-                @input="() => validateConfirmPassword(false)"
-                v-model="formData.confirmPassword"
-              />
-              <div v-if="errors.confirmPassword" class="text-danger">{{ errors.confirmPassword }}</div>
-            </div>
-            </div>
-          <div class="text-center">
-            <button type="submit" class="btn btn-primary me-2" @click="Signup">Signup</button>
-            <button type="button" class="btn btn-secondary" @click="clearForm">Clear</button>
-          </div>
-        </form>
-      </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="text-center">
+          <button @click="signup" class="btn btn-dark w-100 mb-2">Sign up</button>
+          <button type="button" class="btn btn-secondary w-100" @click="clearForm">Clear</button>
+        </div>
+
+        <!-- Username already exists error -->
+        <div v-if="errors.signupUsername" class="text-danger text-center mt-3">
+          {{ errors.signupUsername }}
+        </div>
+      </form>
     </div>
   </div>
 </template>
 
-<style scoped>
-/* .container {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  max-width: 80vw;
-  margin: 0 auto;
-  padding: 20px;
-  /* background-color: #e0bfbf; */
-  /* border-radius: 10px;
-} */
-
-/* Class selectors */
-.form {
-  text-align: center;
-  margin-top: 50px;
-}
-
-/* ID selectors */
-#username:focus,
-#password:focus,
-#isAustralian:focus,
-.card {
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-.card-header {
-  background-color: #275fda;
-  color: white;
-  padding: 10px;
-  border-radius: 10px 10px 0 0;
-}
-.list-group-item {
-  padding: 10px;
-}
-
-.success-message {
-  color: green;
-}
-</style>
+<style scoped></style>

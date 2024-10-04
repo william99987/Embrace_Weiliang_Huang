@@ -68,7 +68,7 @@
           <!-- Log in -->
           <router-link
             to="/Login"
-            v-if="!isAuthenticatedUser && !isAuthenticatedAdmin"
+            v-if="!store.state.isAuthenticated"
             class="btn btn-outline-primary me-2"
             active-class="active"
           >
@@ -78,7 +78,7 @@
           <!-- Sign Up -->
           <router-link
             to="/Signup"
-            v-if="!isAuthenticatedUser && !isAuthenticatedAdmin"
+            v-if="!store.state.isAuthenticated"
             class="btn btn-primary"
             active-class="active"
           >
@@ -99,12 +99,11 @@ import { isAuthenticatedUser, isAuthenticatedAdmin } from '@/composables/useAuth
 import { useRouter } from 'vue-router'
 import { isReviewed } from '@/composables/review'
 import Button from 'primevue/button'
+import store from '@/store/store'
 const router = useRouter()
 
 const logout = () => {
-  isAuthenticatedUser.value = false
-  isAuthenticatedAdmin.value = false
-  isReviewed.value = false
+  store.commit('setAuthentication', false)
   router.push('/') // Redirect to home or any other route after logout
 }
 </script>
