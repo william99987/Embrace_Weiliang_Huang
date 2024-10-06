@@ -5,8 +5,9 @@ import LoginView from '@/views/LoginView.vue'
 import SignupView from '@/views/SignupView.vue'
 import ReviewView from '@/views/ReviewView.vue'
 import AddReviewView from '@/views/AddReviewView.vue'
-import { isAuthenticatedAdmin, isAuthenticatedUser } from '@/composables/useAuth'
-
+import EventsView from '@/views/EventsView.vue'
+import store from '@/store/store'
+import EventTableView from '@/views/EventTableView.vue'
 const routes = [
   {
     path: '/',
@@ -37,6 +38,16 @@ const routes = [
     path: '/AddReview',
     name: 'AddReview',
     component: AddReviewView
+  },
+  {
+    path: '/Events',
+    name: 'Events',
+    component: EventsView
+  },
+  {
+    path: '/EventTable',
+    name: 'EventTable',
+    component: EventTableView
   }
 ]
 
@@ -45,18 +56,18 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach((to, from, next) => {
-  if (
-    !isAuthenticatedUser.value &&
-    to.name !== 'Login' &&
-    to.name !== 'Signup' &&
-    to.name !== 'Home'
-  ) {
-    alert('Please log in first')
-    next({ name: 'Login' })
-  } else {
-    next()
-  }
-})
+// router.beforeEach((to, from, next) => {
+//   if (
+//     !store.state.isAuthenticated &&
+//     to.name !== 'Login' &&
+//     to.name !== 'Signup' &&
+//     to.name !== 'Home'
+//   ) {
+//     alert('Please log in first')
+//     next({ name: 'Login' })
+//   } else {
+//     next()
+//   }
+// })
 
 export default router

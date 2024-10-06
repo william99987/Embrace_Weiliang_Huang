@@ -25,7 +25,7 @@
         <!-- Left side (Navigation Links) -->
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <!-- Conditional Dropdown based on Authentication -->
-          <li v-if="!isAuthenticatedAdmin" class="nav-item dropdown">
+          <li class="nav-item dropdown">
             <a
               class="nav-link dropdown-toggle"
               href="#"
@@ -38,6 +38,29 @@
             <ul class="dropdown-menu">
               <li>
                 <router-link to="/Review" class="dropdown-item">Event reviews</router-link>
+              </li>
+              <li>
+                <router-link to="/EventTable" class="dropdown-item">Event Table</router-link>
+              </li>
+              <li>
+                <router-link to="/Events" class="dropdown-item">Events</router-link>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Get involves
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <router-link to="/Donate" class="dropdown-item">Donate</router-link>
               </li>
               <li>
                 <router-link to="/Signup" class="dropdown-item">Fundraise</router-link>

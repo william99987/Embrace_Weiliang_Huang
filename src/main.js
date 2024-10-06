@@ -5,12 +5,27 @@ import App from './App.vue'
 import router from './router'
 import PrimeVue from 'primevue/config'
 import Aura from '@primevue/themes/aura'
-
+import Card from 'primevue/card'
+import Column from 'primevue/column'
+import Tag from 'primevue/tag'
+import InputText from 'primevue/inputtext'
+import Select from 'primevue/select'
+import DataTable from 'primevue/datatable'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
+import 'primeicons/primeicons.css'
 
 const app = createApp(App)
+
 app.use(PrimeVue, { theme: { preset: Aura } })
+
+app.component('Card', Card)
+app.component('DataTable', DataTable)
+app.component('Column', Column)
+app.component('Tag', Tag)
+app.component('InputText', InputText)
+app.component('Select', Select)
+
 app.use(router)
 
 import { initializeApp } from 'firebase/app'

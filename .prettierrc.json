@@ -3,6 +3,15 @@
   "semi": false,
   "tabWidth": 2,
   "singleQuote": true,
-  "printWidth": 100,
-  "trailingComma": "none"
+  "trailingComma": "none",
+  "overrides": [
+    {
+      "files": ["functions/index.js", "functions/src/email/sendGrid.js"],
+      "options": {
+        "singleQuote": false,
+        "semi": true,
+        "bracketSpacing": false
+      }
+    }
+  ]
 }
