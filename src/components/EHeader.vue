@@ -3,7 +3,13 @@
     <div class="container-fluid">
       <!-- Logo and Brand Name -->
       <router-link to="/" class="navbar-brand">
-        <img src="../logo.png" alt="Charity Logo" width="40" height="40" class="me-2" />
+        <img
+          src="../logo.png"
+          alt="Charity Logo"
+          width="40"
+          height="40"
+          class="me-2"
+        />
         Embrace
       </router-link>
 
@@ -37,13 +43,24 @@
             </a>
             <ul class="dropdown-menu">
               <li>
-                <router-link to="/Review" class="dropdown-item">Event reviews</router-link>
+                <router-link to="/Review" class="dropdown-item"
+                  >Event reviews</router-link
+                >
               </li>
               <li>
-                <router-link to="/EventTable" class="dropdown-item">Event Table</router-link>
+                <router-link to="/EventTable" class="dropdown-item"
+                  >Event Table</router-link
+                >
               </li>
               <li>
-                <router-link to="/Events" class="dropdown-item">Events</router-link>
+                <router-link to="/Events" class="dropdown-item"
+                  >Events</router-link
+                >
+              </li>
+              <li>
+                <router-link to="/EventsMap" class="dropdown-item"
+                  >Events Map</router-link
+                >
               </li>
             </ul>
           </li>
@@ -60,13 +77,19 @@
             </a>
             <ul class="dropdown-menu">
               <li>
-                <router-link to="/Donate" class="dropdown-item">Donate</router-link>
+                <router-link to="/Donate" class="dropdown-item"
+                  >Donate</router-link
+                >
               </li>
               <li>
-                <router-link to="/Signup" class="dropdown-item">Fundraise</router-link>
+                <router-link to="/Signup" class="dropdown-item"
+                  >Fundraise</router-link
+                >
               </li>
               <li>
-                <router-link to="/aboutUs" class="dropdown-item">Events</router-link>
+                <router-link to="/aboutUs" class="dropdown-item"
+                  >Events</router-link
+                >
               </li>
             </ul>
           </li>
@@ -82,7 +105,12 @@
 
         <!-- Right side (Search and Authentication Buttons) -->
         <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+          <input
+            class="form-control me-2"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+          />
           <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
 
@@ -109,7 +137,9 @@
           </router-link>
 
           <!-- Sign Out -->
-          <button v-else class="btn btn-primary" @click="logout">Sign out</button>
+          <button v-else class="btn btn-primary" @click="logout">
+            Sign out
+          </button>
         </div>
       </div>
     </div>
@@ -118,7 +148,10 @@
 
 <script setup>
 import { ref } from 'vue'
-import { isAuthenticatedUser, isAuthenticatedAdmin } from '@/composables/useAuth'
+import {
+  isAuthenticatedUser,
+  isAuthenticatedAdmin
+} from '@/composables/useAuth'
 import { useRouter } from 'vue-router'
 import { isReviewed } from '@/composables/review'
 import Button from 'primevue/button'

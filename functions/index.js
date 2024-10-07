@@ -8,19 +8,16 @@
  */
 
 const {onRequest} = require("firebase-functions/v2/https");
-const express = require("express");
 const admin = require("firebase-admin");
-const cors = require("cors");
-const {sendEmailWithCSV} = require("./src/email/sendGrid");
+const cors = require("cors")({origin: true});
+const {sendEmailWithCSV} = require("./src/email/sendEmailCsv");
 const {convertToCSV} = require("./src/utils/csvUtil");
+
 admin.initializeApp();
 
 const db = admin.firestore();
-const app = express();
-const corsOptions = {
-  origin: true,
-};
-app.use(cors(corsOptions));
+
+
 // Function to get events from Firestore
 const getEvents = async () => {
   try {
@@ -39,6 +36,10 @@ exports.getEvents = onRequest(async (req, res) => {
   cors(req, res, async () => {
     try {
       const events = await getEvents();
+      res.set("Access-Control-Allow-Origin", "*"); // Allow any origin
+      res.set("Access-Control-Allow-Methods", "GET, POST"); // Allowed methods
+      res.set("Access-Control-Allow-Headers", "Content-Type");
+
       res.status(200).send({events});
     } catch (error) {
       res.status(500).send("Error getting events");
@@ -58,8 +59,13 @@ exports.sendEventEmail = onRequest(async (req, res) => {
       const events = await getEvents();
       const csvData = convertToCSV(events); // Convert events to CSV
 
-      // Send the email with CSV attachment
+      // Send the email with CSV attachment using Nodemailer
       await sendEmailWithCSV(csvData, recipientEmail);
+
+      // Set CORS headers for the response
+      res.set("Access-Control-Allow-Origin", "*");
+      res.set("Access-Control-Allow-Methods", "GET, POST");
+      res.set("Access-Control-Allow-Headers", "Content-Type");
 
       res.status(200).send("Email sent successfully!");
     } catch (error) {
@@ -69,6 +75,22 @@ exports.sendEventEmail = onRequest(async (req, res) => {
   });
 });
 
+exports.downloadEventsCsv = onRequest(async (req, res) => {
+  cors(req, res, async () => {
+    try {
+      const events = await getEvents();
+      const csvData = convertToCSV(events);
+
+      res.setHeader("Content-Type", "text/csv");
+      res.setHeader("Content-Disposition", "attachment; filename='events.csv'");
+      res.status(200).send(csvData);
+      res.status(200).send("Download csv successfully!");
+    } catch (error) {
+      console.error("error downloading csv:", error);
+      res.status(500).send("Failed to download csv file");
+    }
+  });
+});
 // Create and deploy your first functions
 // https://firebase.google.com/docs/functions/get-started
 

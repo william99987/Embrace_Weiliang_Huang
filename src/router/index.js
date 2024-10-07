@@ -8,6 +8,7 @@ import AddReviewView from '@/views/AddReviewView.vue'
 import EventsView from '@/views/EventsView.vue'
 import store from '@/store/store'
 import EventTableView from '@/views/EventTableView.vue'
+import EventsMapView from '@/views/EventsMapView.vue'
 const routes = [
   {
     path: '/',
@@ -48,6 +49,11 @@ const routes = [
     path: '/EventTable',
     name: 'EventTable',
     component: EventTableView
+  },
+  {
+    path: '/EventsMap',
+    name: 'EventstMap',
+    component: EventsMapView
   }
 ]
 

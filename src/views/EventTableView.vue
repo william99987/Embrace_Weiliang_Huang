@@ -115,8 +115,10 @@
     </DataTable>
   </div>
 
-  <div>
-    <button @click="addEventsToFirestore">Add Events to Firestore</button>
+  <div class="d-flex justify-content-center">
+    <button @click="downloadCsv" class="btn btn-outline-success">
+      Download events as .csv format
+    </button>
   </div>
 
   <div class="mb-3">
@@ -136,9 +138,6 @@
     <button @click="getAllEventsByEmail" class="btn btn-outline-success">
       Send me an email about the events
     </button>
-    <button @click="getEvents" class="btn btn-outline-success">
-      Get events
-    </button>
   </div>
 </template>
 
@@ -155,6 +154,7 @@ import axios from 'axios'
 
 const error = ref(null)
 const email = ref('')
+const count = ref(null)
 // Initialize reactive variables
 const events = ref([]) // Event data will be fetched from Firestore
 const filters = ref({
@@ -211,6 +211,11 @@ const getAllEventsByEmail = async () => {
       'https://sendeventemail-tvbscw7eca-uc.a.run.app',
       {
         email: receiverEmail
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
       }
     )
     console.log('Email sent successfully', response.data)
@@ -227,10 +232,32 @@ const getEvents = async () => {
     )
     events.value = response.data
     error.value = null
+    console.log(events.value)
   } catch (error) {
     console.error('Error fetching events', error)
     error.value = error
-    events.value = null
+    count.value = null
+  }
+}
+
+const downloadCsv = async () => {
+  try {
+    const response = await axios.get(
+      'https://downloadeventscsv-tvbscw7eca-uc.a.run.app',
+      {
+        responseType: 'blob'
+      }
+    )
+
+    // Create a link element to trigger the download
+    const url = window.URL.createObjectURL(new Blob([response.data]))
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', 'events.csv') // Specify the filename
+    document.body.appendChild(link)
+    link.click() // Trigger the download
+  } catch (error) {
+    console.error('Error downloading CSV:', error)
   }
 }
 

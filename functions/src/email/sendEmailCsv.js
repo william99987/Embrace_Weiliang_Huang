@@ -1,24 +1,32 @@
-const sgMail = require("@sendgrid/mail");
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const nodemailer = require("nodemailer");
+// const functions = require("firebase-functions");
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "krpkro666888@gmail.com",
+    pass: "hdbaiwsfomsdzqew",
+  },
+});
 
 const sendEmailWithCSV = async (csvData, recipientEmail) => {
-  const msg = {
+  const mailOptions = {
+    from: "krokro666888@gmail.com",
     to: recipientEmail,
-    from: "whua0055@student.monash.edu",
     subject: "Events Data",
     text: "Please find the attached CSV file with events data.",
     attachments: [
       {
-        content: Buffer.from(csvData).toString("base64"),
+        content: csvData,
         filename: "events.csv",
         type: "text/csv",
         disposition: "attachment",
       },
     ],
   };
-  
+
   try {
-    await sgMail.send(msg);
+    await transporter.sendMail(mailOptions);
     console.log("Email sent successfully!");
   } catch (error) {
     console.error("Error sending email:", error);
