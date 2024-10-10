@@ -12,6 +12,7 @@ import EventsMapView from '@/views/EventsMapView.vue'
 import AdminDashboardView from '@/views/AdminDashboardView.vue'
 import EventCountAPI from '@/views/EventCountAPI.vue'
 import GetAllEventsAPI from '@/views/GetAllEventsAPI.vue'
+
 const routes = [
   {
     path: '/',

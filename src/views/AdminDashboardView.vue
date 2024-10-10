@@ -107,7 +107,6 @@ const fetchUsers = async () => {
       } else if (user.role === 'user') {
         roleCounts.value.user += 1
       }
-      console.log(roleCounts.value)
     })
     users.value = fetchedUsers // Set the events to the fetched data
     updateChartData(roleCounts)
@@ -145,28 +144,49 @@ const updateChartData = (roleCounts) => {
 }
 
 const filterUsers = () => {
-  if (!selectedRoles.value.length) {
-    filteredUsers.value = users.value // Show all users if no roles are selected
-  } else {
-    filteredUsers.value = users.value.filter((user) =>
-      selectedRoles.value.includes(user.role)
-    )
+  roleCounts.value = { admin: 0, user: 0 } // Reset counts
+
+  if (selectedRoles.value.includes('admin')) {
+    roleCounts.value.admin = users.value.filter(
+      (user) => user.role === 'admin'
+    ).length
   }
+
+  if (selectedRoles.value.includes('user')) {
+    roleCounts.value.user = users.value.filter(
+      (user) => user.role === 'user'
+    ).length
+  }
+
+  // Now update the chart data with filtered role counts
+  updateChartData(roleCounts)
 }
 
 // Initialize chart data with dynamic user counts
-function setChartData(roleCounts) {
+function setChartData(filteredRoleCounts) {
   const documentStyle = getComputedStyle(document.documentElement)
-  // const labels = Object.keys(roleCounts) // Dynamically use roles as labels
-  const data = roleCounts.value
-  console.log(data)
+  const labels = []
+  const data = []
+
+  // Check which roles are included in the filtered data
+  if (filteredRoleCounts.value.admin > 0) {
+    labels.push('Admin')
+    data.push(filteredRoleCounts.value.admin)
+  }
+
+  if (filteredRoleCounts.value.user > 0) {
+    labels.push('User')
+    data.push(filteredRoleCounts.value.user)
+  }
+
   return {
+    labels,
     datasets: [
       {
         type: 'bar',
         label: 'Number of Users',
         backgroundColor: documentStyle.getPropertyValue('--p-primary-400'),
-        data: data,
+        data,
         barThickness: 32,
         borderRadius: { topLeft: 8, topRight: 8 }
       }

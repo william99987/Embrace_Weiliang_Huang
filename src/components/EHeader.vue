@@ -9,6 +9,7 @@
           width="40"
           height="40"
           class="me-2"
+          tabindex="0"
         />
         Embrace
       </router-link>
@@ -294,5 +295,15 @@ header {
 
 .dropdown-item:hover {
   background-color: #f1f1f1;
+}
+
+img:focus {
+  outline: 2px solid #005fcc; /* Add a focus outline for images */
+}
+
+button:focus,
+a:focus,
+input:focus {
+  outline: 2px solid #005fcc; /* Custom focus outline for other elements */
 }
 </style>
