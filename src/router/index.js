@@ -9,6 +9,9 @@ import EventsView from '@/views/EventsView.vue'
 import store from '@/store/store'
 import EventTableView from '@/views/EventTableView.vue'
 import EventsMapView from '@/views/EventsMapView.vue'
+import AdminDashboardView from '@/views/AdminDashboardView.vue'
+import EventCountAPI from '@/views/EventCountAPI.vue'
+import GetAllEventsAPI from '@/views/GetAllEventsAPI.vue'
 const routes = [
   {
     path: '/',
@@ -54,6 +57,21 @@ const routes = [
     path: '/EventsMap',
     name: 'EventstMap',
     component: EventsMapView
+  },
+  {
+    path: '/AdminDashboard',
+    name: 'AdminDashboard',
+    component: AdminDashboardView
+  },
+  {
+    path: '/EventCountAPI',
+    name: 'EventCountAPI',
+    component: EventCountAPI
+  },
+  {
+    path: '/GetAllEventsAPI',
+    name: 'GetAllEventsAPI',
+    component: GetAllEventsAPI
   }
 ]
 

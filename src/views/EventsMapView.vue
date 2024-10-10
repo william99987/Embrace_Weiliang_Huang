@@ -8,8 +8,6 @@
       @keyup.enter="searchPlace"
       class="search-input"
     />
-    <!-- Map Container -->
-    <div id="map" class="map-container"></div>
 
     <!-- Search Result -->
     <div v-if="searchResult">
@@ -19,6 +17,9 @@
         Navigate to this location
       </button>
     </div>
+
+    <!-- Map Container -->
+    <div id="map" class="map-container"></div>
   </div>
 </template>
 
@@ -40,8 +41,8 @@ onMounted(() => {
   map = new mapboxgl.Map({
     container: 'map', // Container ID
     style: 'mapbox://styles/mapbox/streets-v11', // Map style
-    center: [144.9631, -37.8136], // Melbourne coordinates
-    zoom: 12 // Zoom level
+    center: [144.9631, -37.8136],
+    zoom: 12
   })
 
   // Add directions control
@@ -49,7 +50,7 @@ onMounted(() => {
     accessToken: mapboxgl.accessToken,
     unit: 'metric',
     profile: 'mapbox/driving',
-    interactive: false // Prevent manual changes
+    interactive: false
   })
 
   // Add Directions control to the map

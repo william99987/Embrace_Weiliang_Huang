@@ -8,7 +8,6 @@
       stateKey="dt-state-demo-session"
       paginator
       :rows="10"
-      filterDisplay="menu"
       selectionMode="single"
       dataKey="id"
       :globalFilterFields="['name', 'location', 'date', 'status', 'rating']"
@@ -118,6 +117,12 @@
   <div class="d-flex justify-content-center">
     <button @click="downloadCsv" class="btn btn-outline-success">
       Download events as .csv format
+    </button>
+  </div>
+
+  <div class="d-flex justify-content-center">
+    <button @click="downloadPdf" class="btn btn-outline-success">
+      Download events as .pdf format
     </button>
   </div>
 
@@ -261,6 +266,26 @@ const downloadCsv = async () => {
   }
 }
 
+const downloadPdf = async () => {
+  try {
+    const response = await axios.get(
+      'https://downloadeventspdf-tvbscw7eca-uc.a.run.app',
+      {
+        responseType: 'blob'
+      }
+    )
+
+    // Create a link element to trigger the download
+    const url = window.URL.createObjectURL(new Blob([response.data]))
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', 'events.pdf') // Specify the filename
+    document.body.appendChild(link)
+    link.click() // Trigger the download
+  } catch (error) {
+    console.error('Error downloading PDF:', error)
+  }
+}
 // Fetch data when component is mounted
 onMounted(() => {
   fetchEvents() // Fetch the events from Firestore on mount

@@ -4,7 +4,7 @@
       <!-- Logo and Brand Name -->
       <router-link to="/" class="navbar-brand">
         <img
-          src="../logo.png"
+          src="../assets/embrace.jpg"
           alt="Charity Logo"
           width="40"
           height="40"
@@ -62,6 +62,16 @@
                   >Events Map</router-link
                 >
               </li>
+              <li>
+                <router-link to="/GetAllEventsAPI" class="dropdown-item"
+                  >Get all events API</router-link
+                >
+              </li>
+              <li>
+                <router-link to="/EventCountAPI" class="dropdown-item"
+                  >Events count API</router-link
+                >
+              </li>
             </ul>
           </li>
 
@@ -94,10 +104,37 @@
             </ul>
           </li>
 
-          <!-- Additional Static Navigation Links (optional) -->
-          <li class="nav-item">
-            <router-link to="/aboutUs" class="nav-link">About Us</router-link>
+          <li v-if="store.state.isAuthenticatedAdmin" class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Admin
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <router-link to="/AdminDashboard" class="dropdown-item"
+                  >Dashboard</router-link
+                >
+              </li>
+              <li>
+                <router-link to="/Signup" class="dropdown-item"
+                  >Fundraise</router-link
+                >
+              </li>
+              <li>
+                <router-link to="/aboutUs" class="dropdown-item"
+                  >Events</router-link
+                >
+              </li>
+            </ul>
           </li>
+
+          <!-- Additional Static Navigation Links (optional) -->
+
           <li class="nav-item">
             <router-link to="/contact" class="nav-link">Contact</router-link>
           </li>
@@ -148,14 +185,11 @@
 
 <script setup>
 import { ref } from 'vue'
-import {
-  isAuthenticatedUser,
-  isAuthenticatedAdmin
-} from '@/composables/useAuth'
 import { useRouter } from 'vue-router'
 import { isReviewed } from '@/composables/review'
 import Button from 'primevue/button'
 import store from '@/store/store'
+
 const router = useRouter()
 
 const logout = () => {

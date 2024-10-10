@@ -4,7 +4,7 @@ const transporter = nodemailer.createTransport({
   service: 'gmail', // You can also use other services like Yahoo, Outlook, etc.
   auth: {
     user: 'krokro666888@gmail.com', // Your email address
-    pass: 'hdbaiwsfomsdzqew' // Your email password (or app-specific password if 2FA is enabled)
+    pass: '/////' // Your email password (or app-specific password if 2FA is enabled)
   }
 })
 

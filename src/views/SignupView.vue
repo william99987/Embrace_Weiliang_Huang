@@ -11,23 +11,29 @@ const auth = getAuth()
 const signup = async () => {
   try {
     // Create user with email and password
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
-      formData.value.email,
-      formData.value.password
-    )
-    const user = userCredential.user
-
-    console.log('Firebase Register successful!')
-
-    await setDoc(doc(db, 'users', user.uid), {
-      email: user.email,
-      role: 'user' // Assign a default role to new users
-    })
-
-    router.push('/')
+    if (
+      errors.value.email === null &&
+      errors.value.password === null &&
+      errors.value.confirmPassword === null
+    ) {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        formData.value.email,
+        formData.value.password
+      )
+      const user = userCredential.user
+      console.log('Firebase Register successful!')
+      await setDoc(doc(db, 'users', user.uid), {
+        email: user.email,
+        role: 'user' // Assign a default role to new users
+      })
+      router.push('/')
+    } else {
+      alert('Please type in the correct details')
+    }
   } catch (error) {
     console.log(error.code)
+    alert(error.code)
   }
 }
 
@@ -79,15 +85,23 @@ const validatePassword = (blur) => {
   const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password)
 
   if (password.length < minLength) {
-    if (blur) errors.value.password = `Password must be at least ${minLength} characters long.`
+    if (blur)
+      errors.value.password = `Password must be at least ${minLength} characters long.`
   } else if (!hasUppercase) {
-    if (blur) errors.value.password = 'Password must contain at least one uppercase letter.'
+    if (blur)
+      errors.value.password =
+        'Password must contain at least one uppercase letter.'
   } else if (!hasLowercase) {
-    if (blur) errors.value.password = 'Password must contain at least one lowercase letter.'
+    if (blur)
+      errors.value.password =
+        'Password must contain at least one lowercase letter.'
   } else if (!hasNumber) {
-    if (blur) errors.value.password = 'Password must contain at least one number.'
+    if (blur)
+      errors.value.password = 'Password must contain at least one number.'
   } else if (!hasSpecialChar) {
-    if (blur) errors.value.password = 'Password must contain at least one special character.'
+    if (blur)
+      errors.value.password =
+        'Password must contain at least one special character.'
   } else {
     errors.value.password = null
   }
@@ -123,7 +137,9 @@ const validateConfirmPassword = (blur) => {
             @input="() => validateEmail(false)"
             placeholder="Type in your emaill"
           />
-          <div v-if="errors.email" class="text-danger mt-2">{{ errors.email }}</div>
+          <div v-if="errors.email" class="text-danger mt-2">
+            {{ errors.email }}
+          </div>
         </div>
 
         <!-- Password input -->
@@ -138,12 +154,16 @@ const validateConfirmPassword = (blur) => {
             @input="() => validatePassword(false)"
             placeholder="Create a password"
           />
-          <div v-if="errors.password" class="text-danger mt-2">{{ errors.password }}</div>
+          <div v-if="errors.password" class="text-danger mt-2">
+            {{ errors.password }}
+          </div>
         </div>
 
         <!-- Confirm Password input -->
         <div class="mb-3">
-          <label for="confirmPassword" class="form-label">Confirm password</label>
+          <label for="confirmPassword" class="form-label"
+            >Confirm password</label
+          >
           <input
             type="password"
             class="form-control"
@@ -160,8 +180,16 @@ const validateConfirmPassword = (blur) => {
 
         <!-- Buttons -->
         <div class="text-center">
-          <button @click="signup" class="btn btn-dark w-100 mb-2">Sign up</button>
-          <button type="button" class="btn btn-secondary w-100" @click="clearForm">Clear</button>
+          <button @click="signup" class="btn btn-dark w-100 mb-2">
+            Sign up
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary w-100"
+            @click="clearForm"
+          >
+            Clear
+          </button>
         </div>
 
         <!-- Username already exists error -->

@@ -12,7 +12,8 @@ const admin = require("firebase-admin");
 const cors = require("cors")({origin: true});
 const {sendEmailWithCSV} = require("./src/email/sendEmailCsv");
 const {convertToCSV} = require("./src/utils/csvUtil");
-
+const {sendBulkEmail} = require("./src/email/sendBulkEmail");
+const PDFDocument = require("pdfkit");
 admin.initializeApp();
 
 const db = admin.firestore();
@@ -47,6 +48,21 @@ exports.getEvents = onRequest(async (req, res) => {
   });
 });
 
+exports.countEvents = onRequest((req, res) => {
+  cors(req, res, async () => {
+    try {
+      const eventsCollection = admin.firestore().collection("events");
+      const snapshot = await eventsCollection.get();
+      const count = snapshot.size;
+
+      res.status(200).send({count});
+    } catch (error) {
+      console.error("Error counting events:", error.message);
+      res.status(500).send("Error counting events");
+    }
+  });
+});
+
 exports.sendEventEmail = onRequest(async (req, res) => {
   cors(req, res, async () => {
     try {
@@ -75,6 +91,24 @@ exports.sendEventEmail = onRequest(async (req, res) => {
   });
 });
 
+exports.sendPromoteEmail = onRequest(async (req, res) => {
+  cors(req, res, async () => {
+    const {emails} = req.body; // Getthe list of email addresses from
+    if (!emails || emails.length === 0) {
+      return res.status(400).send("No email addresses provided");
+    }
+
+    try {
+    // Send bulk email
+      await sendBulkEmail(emails);
+      res.status(200).send("Bulk email sent successfully!");
+    } catch (error) {
+      console.error("Error sending bulk email:", error);
+      res.status(500).send("Failed to send bulk email");
+    }
+  });
+});
+
 exports.downloadEventsCsv = onRequest(async (req, res) => {
   cors(req, res, async () => {
     try {
@@ -87,6 +121,30 @@ exports.downloadEventsCsv = onRequest(async (req, res) => {
       res.status(200).send("Download csv successfully!");
     } catch (error) {
       console.error("error downloading csv:", error);
+      res.status(500).send("Failed to download csv file");
+    }
+  });
+});
+
+exports.downloadEventsPdf = onRequest(async (req, res) => {
+  cors(req, res, async () => {
+    try {
+      const events = await getEvents();
+      const doc = new PDFDocument();
+
+      res.setHeader("Content-Type", "application/pdf");
+      res.setHeader("Content-Disposition", "attachment; filename='events.pdf'");
+      doc.pipe(res);
+      doc.fontSize(25).text("Event List", {align: "center"});
+      events.forEach((event, index) => {
+        doc.fontSize(14).text(`${index + 1}.${event.name || "Unnamed Event"}`, {
+          align: "left",
+        });
+      });
+      doc.end();
+      console.log("Pdf successfullt generated and sent.");
+    } catch (error) {
+      console.error("error downloading pdf:", error);
       res.status(500).send("Failed to download csv file");
     }
   });

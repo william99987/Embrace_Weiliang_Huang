@@ -11,7 +11,11 @@
           <div class="row g-0">
             <!-- Image Section -->
             <div class="col-md-4">
-              <img :src="event.image" class="img-fluid rounded-start" :alt="event.title" />
+              <img
+                :src="event.image"
+                class="img-fluid rounded-start"
+                :alt="event.title"
+              />
             </div>
 
             <!-- Event Information Section -->
@@ -20,7 +24,9 @@
                 <h5 class="card-title">{{ event.title }}</h5>
                 <p class="card-text">{{ event.description }}</p>
                 <p class="card-text">
-                  <small class="text-body-secondary">Last updated {{ event.updated }}</small>
+                  <small class="text-body-secondary"
+                    >Last updated {{ event.updated }}</small
+                  >
                 </p>
               </div>
             </div>
@@ -31,11 +37,20 @@
   </div>
   <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Email address</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
-    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+    <input
+      type="email"
+      class="form-control"
+      id="exampleInputEmail1"
+      aria-describedby="emailHelp"
+    />
+    <div id="emailHelp" class="form-text">
+      We'll never share your email with anyone else.
+    </div>
   </div>
   <div class="d-flex justify-content-center">
-    <button class="btn btn-outline-success">Send me an email about the events</button>
+    <button class="btn btn-outline-success">
+      Send me an email about the events
+    </button>
   </div>
 </template>
 
@@ -60,11 +75,6 @@ const events = ref([
   }
   // Add more event data here...
 ])
-
-const getEventInfor = async () => {
-  try {
-  } catch (error) {}
-}
 </script>
 
 <style scoped>
