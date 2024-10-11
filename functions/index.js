@@ -37,8 +37,8 @@ exports.getEvents = onRequest(async (req, res) => {
   cors(req, res, async () => {
     try {
       const events = await getEvents();
-      res.set("Access-Control-Allow-Origin", "*"); // Allow any origin
-      res.set("Access-Control-Allow-Methods", "GET, POST"); // Allowed methods
+      res.set("Access-Control-Allow-Origin", "*");
+      res.set("Access-Control-Allow-Methods", "GET, POST");
       res.set("Access-Control-Allow-Headers", "Content-Type");
 
       res.status(200).send({events});

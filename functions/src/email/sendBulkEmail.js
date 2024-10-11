@@ -19,7 +19,6 @@ const sendBulkEmail = async (emailList, csvData) => {
   };
 
   try {
-    // Send email to all recipients using the `bcc` field
     await transporter.sendMail(mailOptions);
     console.log("Bulk email sent successfully!");
   } catch (error) {

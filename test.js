@@ -1,20 +1,20 @@
 import nodemailer from 'nodemailer'
 // Create a transporter object using Gmail's SMTP transport
 const transporter = nodemailer.createTransport({
-  service: 'gmail', // You can also use other services like Yahoo, Outlook, etc.
+  service: 'gmail',
   auth: {
-    user: 'krokro666888@gmail.com', // Your email address
-    pass: '/////' // Your email password (or app-specific password if 2FA is enabled)
+    user: 'krokro666888@gmail.com',
+    pass: '/////'
   }
 })
 
 // Define email options
 const mailOptions = {
-  from: 'krokro666888@gmail.com', // Sender address
-  to: 'spikejoe329@gmail.com', // Recipient address
-  subject: 'Test Email', // Subject of the email
-  text: 'Hello from SMTP!', // Plain text body
-  html: '<b>Hello from SMTP!</b>' // HTML body (optional)
+  from: 'krokro666888@gmail.com',
+  to: 'spikejoe329@gmail.com',
+  subject: 'Test Email',
+  text: 'Hello from SMTP!',
+  html: '<b>Hello from SMTP!</b>'
 }
 
 // Send email

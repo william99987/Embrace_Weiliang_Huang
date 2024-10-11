@@ -53,7 +53,6 @@ export default {
     const GMAIL_USER = env.GMAIL_USER
     const GMAIL_APP_PASSWORD = env.GMAIL_APP_PASSWORD
 
-    // You can use this firebaseConfig object for API calls or other logic.
     return new Response(`API Key accessed securely, action completed.`)
   }
 }
