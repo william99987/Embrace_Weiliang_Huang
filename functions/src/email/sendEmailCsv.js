@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer");
+require("dotenv").config();
 // const functions = require("firebase-functions");
 
 const transporter = nodemailer.createTransport({

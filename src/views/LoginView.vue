@@ -76,11 +76,7 @@ const submitForm = (event) => {
       <!-- Google login button -->
       <div class="text-center mb-3">
         <button class="btn btn-light w-100 border">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png"
-            alt="Google"
-            style="width: 20px; height: 20px; margin-right: 8px"
-          />
+          <img src="../assets/google.png" alt="Google" class="google-icon" />
           Continue with Google
         </button>
       </div>
@@ -135,4 +131,11 @@ const submitForm = (event) => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.google-icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain; /* Ensures the image keeps its aspect ratio */
+  vertical-align: middle; /* Vertically aligns the image within the button */
+}
+</style>

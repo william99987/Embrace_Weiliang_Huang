@@ -9,8 +9,10 @@ export default {
       appId: env.VITE_FIREBASE_APP_ID
     }
     const VITE_MAPBOX_ACCESS_TOKEN = env.VITE_MAPBOX_ACCESS_TOKEN
+    const GMAIL_USER = env.GMAIL_USER
+    const GMAIL_APP_PASSWORD = env.GMAIL_APP_PASSWORD
 
-    // You can use this firebaseConfig object for API calls or other logic.
+    // You can use this firebaseConfSig object for API calls or other logic.
     return new Response(`API Key accessed securely, action completed.`)
   }
 }

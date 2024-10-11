@@ -89,7 +89,6 @@ const roleCounts = ref({
   user: 0 // Predefine 'user' role
 })
 const selectedRoles = ref([]) // Holds selected roles for the filter
-const filteredUsers = ref([]) // Filtered users list
 
 // Function to fetch user data from Firestore
 const fetchUsers = async () => {

@@ -4,8 +4,8 @@ const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "krokro666888@gmail.com", // Sender's email
-    pass: "hdbaiwsfomsdzqew", // App password or email password
+    user: "krokro666888@gmail.com",
+    pass: "hdbaiwsfomsdzqew",
   },
 });
 
@@ -14,8 +14,8 @@ const sendBulkEmail = async (emailList, csvData) => {
   const mailOptions = {
     from: "krokro666888@gmail.com", // Sender's email
     bcc: emailList, // List of recipients
-    subject: "Events Data",
-    text: "Please find the attached CSV file with events data.",
+    subject: "Donation proposal",
+    text: "Please donate please!!!!!!!!!!!!!!!!!!!",
   };
 
   try {
