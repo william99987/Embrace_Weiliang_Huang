@@ -224,6 +224,7 @@ const getAllEventsByEmail = async () => {
       }
     )
     console.log('Email sent successfully', response.data)
+    alert('Email sent!')
     email.value = ''
   } catch (error) {
     console.log('Error sending email', error)
