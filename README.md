@@ -1,6 +1,10 @@
 # weiliang_embrace
 
-This template should help get you started developing with Vue 3 in Vite.
+To log in as admin to try all the features:
+admin account:
+
+email: whua0055@student.monash.edu
+password: Hwl123456@
 
 ## Recommended IDE Setup
 
